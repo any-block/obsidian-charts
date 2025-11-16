@@ -1,94 +1,45 @@
-# Obsidian Sample Plugin
+# Obsidian ECharts Depend
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+只有两个功能:
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
+- 为其他插件提供 ECharts 依赖
+  - 其他插件可以将 ECharts 作为可选依赖，避免插件体积过大。也可以无需自行维护 ECharts 版本
+- 提供 echarts 类型的代码块
+  - 可以通过代码块简单地渲染 ECharts
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open Sample Modal" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+## 为其他插件提供 ECharts 依赖
 
-## First time developing plugins?
+安装即可
 
-Quick starting guide for new plugin devs:
+- 最好是先加载该插件，再加载需要依赖于该插件的插件。可以用一些延时加载插件做到这一点
+- 当然，依赖于该插件的插件，也可以做一些操作避免这种繁琐步骤: 加载后等待轮询一段时间，去尝试寻找该插件并获取对应的依赖
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+For developer: 其他插件如何获取依赖? 以下是一个代码示例:
 
-## Releasing new releases
+```typescript
+import { App, Plugin } from 'obsidian';
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+// 假设这是另一个插件
+export default class MyChartPlugin extends Plugin {
+    private echarts: any;
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
-
-## Adding your plugin to the community plugin list
-
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
-
-## How to use
-
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
-
-## Manually installing the plugin
-
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
-
-## Improve code quality with eslint (optional)
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- To use eslint with this project, make sure to install eslint from terminal:
-  - `npm install -g eslint`
-- To use eslint to analyze this project use this command:
-  - `eslint main.ts`
-  - eslint will then create a report with suggestions for code improvement by file and line number.
-- If your source code is in a folder, such as `src`, you can use eslint with this command to analyze all files in that folder:
-  - `eslint ./src/`
-
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
-```
-
-If you have multiple URLs, you can also do:
-
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
+    async onload() {
+        this.app.workspace.onLayoutReady(() => {
+            const echartsPlugin = this.app.plugins.plugins['obsidian-echarts-depend'];
+            if (echartsPlugin) {
+                this.echarts = echartsPlugin.echarts;
+                console.log('Successfully get echarts from EchartsDependPlugin.');
+                // 在这里您就可以使用 this.echarts 来创建图表了
+                // 例如：const myChart = this.echarts.init(document.getElementById('main'));
+            } else {
+                console.error('EchartsDependPlugin not found. Please install and enable it.');
+                // 在这里可以做一些降级处理，比如提示用户安装依赖插件
+            }
+        });
     }
 }
 ```
 
-## API Documentation
+## 提供 echarts 类型的代码块
 
-See https://github.com/obsidianmd/obsidian-api
+略

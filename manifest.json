@@ -1,11 +1,14 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "obsidian-echarts-depend",
+	"name": "ECharts Depend",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Provides ECharts library as a dependency for other plugins.",
+	"author": "LincZero",
+	"authorUrl": "https://github.com/LincZero",
+	"fundingUrl": {
+		"Support Page": "https://github.com/LincZero#thank-you-very-much-for-your-support",
+		"中国大陆备用链接": "https://linczero-github-io.pages.dev/MdNote_Other/LincZero/#thank-you-very-much-for-your-support"
+	},
 	"isDesktopOnly": false
 }
