@@ -63,6 +63,7 @@ class CEcharts {
             this.option = JSON.parse(source)
             return this.codeBlockProcessor_echarts_json()
         } catch (e) {
+            // 如果 JSON 解析失败，则假定为 JavaScript
             return this.codeBlockProcessor_echarts_js()
         }
     }
@@ -96,19 +97,20 @@ class CEcharts {
         // ECharts 实例
         let echarts: echarts.ECharts | null = null
         try {
-            // 如果 JSON 解析失败，则假定为 JavaScript
+            echarts = this.echarts_lib.init(this.el) // 初始化
+
+            // 函数部分
             // 使用异步函数构造器来执行代码，这比 eval 更安全
-            // 我们将 echarts 实例和 ctx 传递给脚本，以便在脚本内部使用
             // 
             // 脚本自需要运行 echarts.setOption
             const AsyncFunction = Object.getPrototypeOf(async function(){}).constructor
             const ctx = {
-                echarts: this.echarts_lib,
+                echarts: echarts,
                 el: this.el,
                 ctx: this.ctx
             }
             const func = new AsyncFunction('ctx', `
-                const echarts = ctx.echarts.init(ctx.el) // 初始化
+                const echarts = ctx.echarts;
                 // let option;
                 // let width;
                 // let height;
@@ -116,11 +118,10 @@ class CEcharts {
                 // return { option, width, height };
                 return echarts;
             `)
-            echarts = await func(this.echarts_lib, this.ctx) // const result = 
+            await func(ctx) // 传递给脚本一些上下文，以便在脚本内部使用
             // this.option = result.option
             // if (result.width) this.width = result.width
             // if (result.height) this.height = result.height
-            // this.codeBlockProcessor_echarts_base()
 
             // 动态变化部分
             this.plugin.register(() => { if (echarts) echarts.dispose() }) // 确保图表在窗口大小改变时能够自适应
