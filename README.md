@@ -2,10 +2,11 @@
 
 只有两个功能:
 
-- 为其他插件提供 ECharts 依赖
-  - 其他插件可以将 ECharts 作为可选依赖，避免插件体积过大。也可以无需自行维护 ECharts 版本
-- 提供 echarts 类型的代码块
-  - 可以通过代码块简单地渲染 ECharts
+- 为其他插件提供 ECharts 与 Chart.js 依赖
+  - 其他插件可以将 ECharts 作为可选依赖，避免插件体积过大 (1.27MB) 且重复
+  - 也便于开发者无需自行维护 ECharts 版本 (可能存在过期问题，若过期又不想更新，则需自行依赖在自己的插件中并固定)
+- 提供 echarts / chartjs 类型的代码块
+  - 可以通过代码块简单地渲染 ECharts / Chart.js
 
 ## 为其他插件提供 ECharts 依赖
 
@@ -40,6 +41,19 @@ export default class MyChartPlugin extends Plugin {
 }
 ```
 
-## 提供 echarts 类型的代码块
+## 提供 echarts / chartjs 类型的代码块
 
 略
+
+## 学习 ECharts / chartjs 编写
+
+此处仅提供一些资料
+
+- ECharts (官方提供中文文档)
+  - 官网: https://echarts.apache.org/zh/index.html
+  - 快速入门: https://echarts.apache.org/handbook/zh/get-started/#
+  - 示例: https://echarts.apache.org/examples/zh/index.html
+- Chart.js
+  - 官网：https://www.chartjs.org/
+
+参考了部分: https://theme-hope.vuejs.press/zh/guide/markdown/chart/echarts.html
