@@ -56,4 +56,4 @@ export default class MyChartPlugin extends Plugin {
 - Chart.js
   - 官网：https://www.chartjs.org/
 
-参考了部分: https://theme-hope.vuejs.press/zh/guide/markdown/chart/echarts.html
+参考了 Vuepress-Hope-Theme 的部分语法: https://theme-hope.vuejs.press/zh/guide/markdown/chart/echarts.html，在此鸣谢。这里尽量使语法与之贴近，以便跨平台使用
