@@ -13,7 +13,7 @@ export default class EchartsDependPlugin extends Plugin {
         this.chartjs = chartjs
 
         this.registerMarkdownCodeBlockProcessor('echarts', (source, el, ctx) => {
-            new CEcharts(this).codeBlockProcessor_echarts(source, el, ctx)
+            void new CEcharts(this).codeBlockProcessor_echarts(source, el, ctx)
         })
     }
 
@@ -29,7 +29,7 @@ class CEcharts {
 
     el: HTMLElement
     option: any
-    width: number | string = '100%'
+    width: number | string = '100%' // '600px' // 百分比可能不行，100%
     height: number | string = '400px'
 
     constructor(
@@ -57,8 +57,11 @@ class CEcharts {
         this.el = this.parent_el.createDiv({ cls: 'echarts-container' })
         this.el.style.width = typeof this.width === 'number' ? `${this.width}px` : this.width
         this.el.style.height = typeof this.height === 'number' ? `${this.height}px` : this.height
+        // 必须要先应用成功尺寸后，再去渲染ECharts。否则尺寸会为 min-width，导致 ECharts 图表尺寸过小
+        await new Promise(resolve => setTimeout(resolve, 10))
+        // console.log('el p width:', this.parent_el.parentElement?.offsetWidth)
 
-        // 分发        
+        // 分发
         try {
             this.option = JSON.parse(source)
             return this.codeBlockProcessor_echarts_json()
@@ -73,13 +76,11 @@ class CEcharts {
             throw new Error('"option" variable is not defined in the script or the JSON is invalid.')
         }
 
-        // ECharts 实例
         let echarts: echarts.ECharts | null = null
         try {
-            echarts = this.echarts_lib.init(this.el) // 初始化
+            echarts = this.echarts_lib.init(this.el) // (1) 初始化
 
-            // 设置图表配置
-            echarts.setOption(this.option)
+            echarts.setOption(this.option) // (2) 设置图表配置
 
             // 动态变化部分
             this.plugin.register(() => { if (echarts) echarts.dispose() }) // 确保图表在窗口大小改变时能够自适应
@@ -94,10 +95,9 @@ class CEcharts {
     }
 
     async codeBlockProcessor_echarts_js() {
-        // ECharts 实例
         let echarts: echarts.ECharts | null = null
         try {
-            echarts = this.echarts_lib.init(this.el) // 初始化
+            echarts = this.echarts_lib.init(this.el) // (1) 初始化
 
             // 函数部分
             // 使用异步函数构造器来执行代码，这比 eval 更安全
@@ -109,19 +109,21 @@ class CEcharts {
                 el: this.el,
                 ctx: this.ctx
             }
-            const func = new AsyncFunction('ctx', `
-                const echarts = ctx.echarts;
-                // let option;
-                // let width;
-                // let height;
-                ${this.source}
-                // return { option, width, height };
-                return echarts;
-            `)
-            await func(ctx) // 传递给脚本一些上下文，以便在脚本内部使用
-            // this.option = result.option
-            // if (result.width) this.width = result.width
-            // if (result.height) this.height = result.height
+            const runner = new AsyncFunction('ctx', `\
+const echarts = ctx.echarts;
+let width,height,option,__echarts_config__;
+{
+    ${this.source}
+    __echarts_config__={width,height,option};
+}
+
+return __echarts_config__;`)
+            const result = await runner(ctx) // 传递给脚本一些上下文，以便在脚本内部使用
+            this.option = result.option
+            this.width = result.width
+            this.height = result.height
+
+            echarts.setOption({ ...this.option }) // (2) 设置图表配置
 
             // 动态变化部分
             this.plugin.register(() => { if (echarts) echarts.dispose() }) // 确保图表在窗口大小改变时能够自适应
