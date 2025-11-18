@@ -1,4 +1,4 @@
-# Obsidian ECharts Depend
+# Obsidian Charts Depend
 
 只有两个功能:
 
@@ -8,7 +8,7 @@
 - 提供 echarts / chartjs 类型的代码块
   - 可以通过代码块简单地渲染 ECharts / Chart.js
 
-## 为其他插件提供 ECharts 依赖
+## 为其他插件提供 ECharts 与 Chart.js 依赖
 
 安装即可
 
@@ -43,7 +43,27 @@ export default class MyChartPlugin extends Plugin {
 
 ## 提供 echarts / chartjs 类型的代码块
 
-略
+代码块类型为 echarts / chartjs
+
+### 语法
+
+参考了 vuepress 生态系统中的语法:
+
+- https://theme-hope.vuejs.press/zh/guide/markdown/chart/echarts.html
+- https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-chart/echarts.html
+
+更详细的语法你可以参考 ECharts 和 chart.js 官网
+
+部分教程可见上，或见插件示例 (需要同时安装此插件和 AnyBlock 插件再进行查看): [demo from vuepress-hope-theme](./docs/demo%20from%20vuepress-hope-theme.md)
+
+### 使用 js/json 作为代码块类型进行美化
+
+与 vuepress 插件中的用法不同的是，该插件本身不支持 `:::` 语法，你需要直接使用 echart / chartjs 作为代码块类型
+
+至于使用 json / js 作为代码块类型进行美化，并使用 `:::` 或其他标识将其转换为 echarts / chartjs 代码块并渲染的功能，
+则交由我的另一个插件实现 —— [AnyBlock](https://github.com/any-block/any-block)
+
+其语法见: [demo from vuepress-hope-theme](./docs/demo%20from%20vuepress-hope-theme.md)
 
 ## 学习 ECharts / chartjs 编写
 
