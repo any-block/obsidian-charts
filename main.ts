@@ -55,11 +55,11 @@ class CEcharts {
 
         // 创建一个容器来放置图表和可能的错误信息
         this.el = this.parent_el.createDiv({ cls: 'echarts-container' })
+        // 渲染前明确父元素尺寸
+        // 必须保证先应用成功尺寸后，再去渲染ECharts。否则尺寸会为 min-width，导致 ECharts 图表尺寸过小
         this.el.style.width = typeof this.width === 'number' ? `${this.width}px` : this.width
         this.el.style.height = typeof this.height === 'number' ? `${this.height}px` : this.height
-        // 必须要先应用成功尺寸后，再去渲染ECharts。否则尺寸会为 min-width，导致 ECharts 图表尺寸过小
         await new Promise(resolve => setTimeout(resolve, 10))
-        // console.log('el p width:', this.parent_el.parentElement?.offsetWidth)
 
         // 分发
         try {
@@ -78,11 +78,13 @@ class CEcharts {
 
         let echarts: echarts.ECharts | null = null
         try {
-            echarts = this.echarts_lib.init(this.el) // (1) 初始化
+            // (1) 初始化
+            echarts = this.echarts_lib.init(this.el)
 
-            echarts.setOption(this.option) // (2) 设置图表配置
+            // (2) 设置图表配置
+            echarts.setOption(this.option)
 
-            // 动态变化部分
+            // (4) 动态变化部分
             this.plugin.register(() => { if (echarts) echarts.dispose() }) // 确保图表在窗口大小改变时能够自适应
             this.ctx.addChild(new CEChart_Render(this.el, echarts)) // 当插件被卸载或代码块被重绘时，销毁图表实例以释放资源
         } catch (err) {
@@ -97,9 +99,10 @@ class CEcharts {
     async codeBlockProcessor_echarts_js() {
         let echarts: echarts.ECharts | null = null
         try {
-            echarts = this.echarts_lib.init(this.el) // (1) 初始化
+            // (1) 初始化
+            echarts = this.echarts_lib.init(this.el)
 
-            // 函数部分
+            // (2) 设置图表配置 —— by 函数
             // 使用异步函数构造器来执行代码，这比 eval 更安全
             // 
             // 脚本自需要运行 echarts.setOption
@@ -119,13 +122,20 @@ let width,height,option,__echarts_config__;
 
 return __echarts_config__;`)
             const result = await runner(ctx) // 传递给脚本一些上下文，以便在脚本内部使用
+            if (result.width) {
+                this.width = result.width
+                this.el.style.width = typeof this.width === 'number' ? `${this.width}px` : this.width
+                if (typeof this.width === 'number') echarts.resize({ width: this.width })
+            }
+            if (result.height) {
+                this.height = result.height
+                this.el.style.height = typeof this.height === 'number' ? `${this.height}px` : this.height
+                if (typeof this.height === 'number') echarts.resize({ height: this.height })
+            }
             this.option = result.option
-            this.width = result.width
-            this.height = result.height
+            echarts.setOption({ ...this.option })
 
-            echarts.setOption({ ...this.option }) // (2) 设置图表配置
-
-            // 动态变化部分
+            // (4) 动态变化部分
             this.plugin.register(() => { if (echarts) echarts.dispose() }) // 确保图表在窗口大小改变时能够自适应
             if (echarts) this.ctx.addChild(new CEChart_Render(this.el, echarts)) // 当插件被卸载或代码块被重绘时，销毁图表实例以释放资源
         } catch (err) {
