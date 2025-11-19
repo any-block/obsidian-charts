@@ -8,7 +8,7 @@
 - 提供 echarts / chartjs 类型的代码块
   - 可以通过代码块简单地渲染 ECharts / Chart.js
 
-## 为其他插件提供 ECharts 与 Chart.js 依赖
+## (1) 为其他插件提供 ECharts 与 Chart.js 依赖
 
 安装即可
 
@@ -41,7 +41,7 @@ export default class MyChartPlugin extends Plugin {
 }
 ```
 
-## 提供 echarts / chartjs 类型的代码块
+## (2) 提供 echarts / chartjs 类型的代码块
 
 代码块类型为 echarts / chartjs
 
@@ -56,7 +56,7 @@ export default class MyChartPlugin extends Plugin {
 
 部分教程可见上，或见插件示例 (需要同时安装此插件和 AnyBlock 插件再进行查看): [demo from vuepress-hope-theme](./docs/demo%20from%20vuepress-hope-theme.md)
 
-### 使用 js/json 作为代码块类型进行美化
+### 使用 anyblock, 并用 js/json 作为代码块类型进行美化
 
 与 vuepress 插件中的用法不同的是，该插件本身不支持 `:::` 语法，你需要直接使用 echart / chartjs 作为代码块类型
 
@@ -65,7 +65,24 @@ export default class MyChartPlugin extends Plugin {
 
 其语法见: [demo from vuepress-hope-theme](./docs/demo%20from%20vuepress-hope-theme.md)
 
-## 学习 ECharts / chartjs 编写
+### 使用 anyblock，并使用一些转换处理器来简化语法
+
+anyblock 2025-11-19 之后的版本内置了一些将 markdown 转 echarts 对象的处理器，你可以使用他们大幅简化 echarts 的书写。如:
+
+```md
+[list2echarts_radial|code(echarts)]
+
+- 11
+  - 22
+  - 33
+- 44
+```
+
+(如果你觉得开头那一串很长，你可以使用别名系统将他们修改成任意标识，甚至是非英文标识。你也可以使用 anymenu 插件/软件来可视化快速输入他们，减少记忆负担)
+
+## 其他
+
+### 学习 ECharts / chartjs 编写
 
 此处仅提供一些资料
 
