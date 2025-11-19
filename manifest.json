@@ -1,6 +1,6 @@
 {
-	"id": "obsidian-echarts-depend",
-	"name": "ECharts Depend",
+	"id": "obsidian-charts-depend",
+	"name": "Charts Depend",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Provides ECharts library as a dependency for other plugins.",
