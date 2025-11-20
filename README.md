@@ -65,12 +65,12 @@ export default class MyChartPlugin extends Plugin {
 
 其语法见: [demo from vuepress-hope-theme](./docs/demo%20from%20vuepress-hope-theme.md)
 
-### 使用 anyblock，并使用一些转换处理器来简化语法
+### 使用 AnyBlock，并使用一些转换处理器来简化语法
 
 anyblock 2025-11-19 之后的版本内置了一些将 markdown 转 echarts 对象的处理器，你可以使用他们大幅简化 echarts 的书写。如:
 
 ```md
-[list2echarts_radial|code(echarts)]
+[list2echarts_tree]
 
 - 11
   - 22
@@ -79,6 +79,12 @@ anyblock 2025-11-19 之后的版本内置了一些将 markdown 转 echarts 对�
 ```
 
 (如果你觉得开头那一串很长，你可以使用别名系统将他们修改成任意标识，甚至是非英文标识。你也可以使用 anymenu 插件/软件来可视化快速输入他们，减少记忆负担)
+
+### 使用 AnyMenu，可视化输出模板，减少记忆负担
+
+你可以在 AnyMenu 的云词库中找到 `ECharts` 词典，在线下载并开启。
+
+然后，你就可以通过右键菜单或搜索框等方式快速输入 ECharts 模板，而无需记忆和手写完整的语法
 
 ## 其他
 
