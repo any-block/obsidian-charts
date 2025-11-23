@@ -79,7 +79,8 @@ class CEcharts {
         let echarts: echarts.ECharts | null = null
         try {
             // (1) 初始化
-            echarts = this.echarts_lib.init(this.el)
+            const currentTheme = document.body.classList.contains('theme-dark') ? 'dark' : 'light'; // obsidian主题
+            echarts = this.echarts_lib.init(this.el, currentTheme)
 
             // (2) 设置图表配置
             echarts.setOption(this.option)
@@ -100,7 +101,8 @@ class CEcharts {
         let echarts: echarts.ECharts | null = null
         try {
             // (1) 初始化
-            echarts = this.echarts_lib.init(this.el)
+            const currentTheme = document.body.classList.contains('theme-dark') ? 'dark' : 'light'; // obsidian主题
+            echarts = this.echarts_lib.init(this.el, currentTheme)
 
             // (2) 设置图表配置 —— by 函数
             // 使用异步函数构造器来执行代码，这比 eval 更安全

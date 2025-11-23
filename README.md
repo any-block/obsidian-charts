@@ -100,3 +100,22 @@ AnyBlock 2025-11-19 之后的版本内置了一些将 markdown 转 echarts 对�
   - 官网：https://www.chartjs.org/
 
 参考了 Vuepress-Hope-Theme 的部分语法: https://theme-hope.vuejs.press/zh/guide/markdown/chart/echarts.html，在此鸣谢。这里尽量使语法与之贴近，以便跨平台使用
+
+### 可视化编辑
+
+你可以使用 https://echarts.apache.org/examples/zh/editor.html 在线可视化编辑。在编辑完成后，你可以将代码复制到上面所说的语法的代码块中，**并在头部添加**:
+
+```js
+let echarts = myCharts;
+echarts = echarts_lib;
+```
+
+反过来，如果你想要在线编辑这里的内容，则需要去除上面的内容，或在头部加上:
+
+```js
+let echarts_lib = echarts
+echarts = myCharts
+```
+
+> [!WARNING]
+> 由于暴露给脚本的变量名与和echarts官网示例中的变量名不完全一致，如果你使用到了这些变量，你通常需要做这一步
