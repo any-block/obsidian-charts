@@ -110,10 +110,16 @@ class CEcharts {
             const ctx = {
                 echarts: echarts,
                 el: this.el,
-                ctx: this.ctx
+                ctx: this.ctx,
+                echarts_lib: this.echarts_lib,
             }
+            // 名字这里有些问题:
+            // 官方在线demo中，实例对象名是myChart, 库对象名是echarts
+            // 而在 vuepress ecosystem 中，实例对象名是echarts, 暂无暴露库对象 (我已FR, 等待解决)
             const runner = new AsyncFunction('ctx', `\
 const echarts = ctx.echarts;
+const myChart = ctx.echarts;
+const echarts_lib = ctx.echarts_lib;
 let width,height,option,__echarts_config__;
 {
     ${this.source}

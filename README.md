@@ -56,7 +56,7 @@ export default class MyChartPlugin extends Plugin {
 
 部分教程可见上，或见插件示例 (需要同时安装此插件和 AnyBlock 插件再进行查看): [demo from vuepress-hope-theme](./docs/demo%20from%20vuepress-hope-theme.md)
 
-### 使用 anyblock, 并用 js/json 作为代码块类型进行美化
+### 使用 AnyBlock, 并用 js/json 作为代码块类型进行美化
 
 与 vuepress 插件中的用法不同的是，该插件本身不支持 `:::` 语法，你需要直接使用 echart / chartjs 作为代码块类型
 
@@ -67,7 +67,7 @@ export default class MyChartPlugin extends Plugin {
 
 ### 使用 AnyBlock，并使用一些转换处理器来简化语法
 
-anyblock 2025-11-19 之后的版本内置了一些将 markdown 转 echarts 对象的处理器，你可以使用他们大幅简化 echarts 的书写。如:
+AnyBlock 2025-11-19 之后的版本内置了一些将 markdown 转 echarts 对象的处理器，你可以使用他们大幅简化 echarts 的书写。如:
 
 ```md
 [list2echarts_tree]
