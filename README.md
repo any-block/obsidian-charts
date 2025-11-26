@@ -8,7 +8,72 @@
 - 提供 echarts / chartjs 类型的代码块
   - 可以通过代码块简单地渲染 ECharts / Chart.js
 
-## (1) 为其他插件提供 ECharts 与 Chart.js 依赖
+## (1) 提供 echarts / chartjs 类型的代码块
+
+代码块类型为 echarts / chartjs
+
+### 语法
+
+参考了 vuepress 生态系统中的语法:
+
+- https://theme-hope.vuejs.press/zh/guide/markdown/chart/echarts.html
+- https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-chart/echarts.html
+
+更详细的语法你可以参考 ECharts 和 chart.js 官网
+
+部分教程可见上，或见插件示例 (需要同时安装此插件和 AnyBlock 插件再进行查看): [demo from vuepress-hope-theme](./docs/old%20docs/demo%20from%20vuepress-hope-theme.md)
+
+### 使用 AnyBlock, 并用 js/json 作为代码块类型进行美化
+
+与 vuepress 插件中的用法不同的是，该插件本身不支持 `:::` 语法，你需要直接使用 echart / chartjs 作为代码块类型
+
+至于使用 json / js 作为代码块类型进行美化，并使用 `:::` 或其他标识将其转换为 echarts / chartjs 代码块并渲染的功能，
+则交由我的另一个插件实现 —— [AnyBlock](https://github.com/any-block/any-block)
+
+~~部分语法可见: [demo from vuepress-hope-theme](./docs/old%20docs/demo%20from%20vuepress-hope-theme.md)~~
+
+````markdown
+AnyBlock的方括号选择器:
+
+[echarts]
+
+```js
+xxx
+```
+
+或 AnyBlock 和 Markdwon-it 的 `:::` 选择器
+
+::: echarts
+
+```js
+xxx
+```
+
+:::
+````
+
+### 使用 AnyBlock，并使用一些转换处理器来简化语法
+
+AnyBlock 2025-11-19 之后的版本内置了一些将 markdown 转 echarts 对象的处理器，你可以使用他们大幅简化 echarts 的书写。如:
+
+```md
+[list2echarts_tree]
+
+- 11
+  - 22
+  - 33
+- 44
+```
+
+(如果你觉得开头那一串很长，你可以使用别名系统将他们修改成任意标识，甚至是非英文标识。你也可以使用 anymenu 插件/软件来可视化快速输入他们，减少记忆负担)
+
+### 使用 AnyMenu，可视化输出模板，减少记忆负担
+
+你可以在 AnyMenu 的云词库中找到 `ECharts` 词典，在线下载并开启。
+
+然后，你就可以通过右键菜单或搜索框等方式快速输入 ECharts 模板，而无需记忆和手写完整的语法
+
+## (2) 为其他插件提供 ECharts 与 Chart.js 依赖
 
 安装即可
 
@@ -41,52 +106,13 @@ export default class MyChartPlugin extends Plugin {
 }
 ```
 
-## (2) 提供 echarts / chartjs 类型的代码块
-
-代码块类型为 echarts / chartjs
-
-### 语法
-
-参考了 vuepress 生态系统中的语法:
-
-- https://theme-hope.vuejs.press/zh/guide/markdown/chart/echarts.html
-- https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-chart/echarts.html
-
-更详细的语法你可以参考 ECharts 和 chart.js 官网
-
-部分教程可见上，或见插件示例 (需要同时安装此插件和 AnyBlock 插件再进行查看): [demo from vuepress-hope-theme](./docs/demo%20from%20vuepress-hope-theme.md)
-
-### 使用 AnyBlock, 并用 js/json 作为代码块类型进行美化
-
-与 vuepress 插件中的用法不同的是，该插件本身不支持 `:::` 语法，你需要直接使用 echart / chartjs 作为代码块类型
-
-至于使用 json / js 作为代码块类型进行美化，并使用 `:::` 或其他标识将其转换为 echarts / chartjs 代码块并渲染的功能，
-则交由我的另一个插件实现 —— [AnyBlock](https://github.com/any-block/any-block)
-
-其语法见: [demo from vuepress-hope-theme](./docs/demo%20from%20vuepress-hope-theme.md)
-
-### 使用 AnyBlock，并使用一些转换处理器来简化语法
-
-AnyBlock 2025-11-19 之后的版本内置了一些将 markdown 转 echarts 对象的处理器，你可以使用他们大幅简化 echarts 的书写。如:
-
-```md
-[list2echarts_tree]
-
-- 11
-  - 22
-  - 33
-- 44
-```
-
-(如果你觉得开头那一串很长，你可以使用别名系统将他们修改成任意标识，甚至是非英文标识。你也可以使用 anymenu 插件/软件来可视化快速输入他们，减少记忆负担)
-
-### 使用 AnyMenu，可视化输出模板，减少记忆负担
-
-你可以在 AnyMenu 的云词库中找到 `ECharts` 词典，在线下载并开启。
-
-然后，你就可以通过右键菜单或搜索框等方式快速输入 ECharts 模板，而无需记忆和手写完整的语法
-
 ## 其他
+
+### 可视化编辑
+
+你可以使用 [ECharts](https://echarts.apache.org/en/index.html) 官网中的文档和示例页面中的 demo，将代码复制到上面所说的语法的代码块中
+
+你也可以使用 https://echarts.apache.org/examples/zh/editor.html 进行在线的可视化编辑。在编辑完成后，将代码复制到上面所说的语法的代码块中
 
 ### 学习 ECharts / chartjs 编写
 
@@ -100,22 +126,3 @@ AnyBlock 2025-11-19 之后的版本内置了一些将 markdown 转 echarts 对�
   - 官网：https://www.chartjs.org/
 
 参考了 Vuepress-Hope-Theme 的部分语法: https://theme-hope.vuejs.press/zh/guide/markdown/chart/echarts.html，在此鸣谢。这里尽量使语法与之贴近，以便跨平台使用
-
-### 可视化编辑
-
-你可以使用 https://echarts.apache.org/examples/zh/editor.html 在线可视化编辑。在编辑完成后，你可以将代码复制到上面所说的语法的代码块中，**并在头部添加**:
-
-```js
-let echarts = myCharts;
-echarts = echarts_lib;
-```
-
-反过来，如果你想要在线编辑这里的内容，则需要去除上面的内容，或在头部加上:
-
-```js
-let echarts_lib = echarts
-echarts = myCharts
-```
-
-> [!WARNING]
-> 由于暴露给脚本的变量名与和echarts官网示例中的变量名不完全一致，如果你使用到了这些变量，你通常需要做这一步
