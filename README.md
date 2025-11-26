@@ -14,16 +14,58 @@
 
 ### 语法
 
+代码块语法，使用 echarts 类型的代码块。支持 json 和 js 两种形式的使用方法
+
+json形式:
+
+````
+```echarts
+{
+  // 此处为 ECharts 图表配置
+}
+```
+````
+
+或js形式: 我们将通过 `myChart` 变量暴露 ECharts 实例，使用 `echarts` 暴露 ECharts 库。并且你应该将 Echart 配置赋值给 `option` 变量。同时，你也可以赋值 `width` 和 `height` 来设置图表大小
+
+````md
+```echarts
+const option = {
+  // 此处为 ECharts 图表配置
+};
+```
+````
+
+> 通用性: 在 obsdian 中，均可通过本插件使用。Vuepress 中可使用 ECharts 插件，其他博客平台同理。ECharts 在线编辑器中，对于代码块内的内容也是支持的
+
+这里，你已经学会了如何通过代码块方式来使用。以下均为改善编辑体验的可选操作，但十分推荐查看
+
+### `[]` 语法
+
+你可以使用 AnyBlock, 并用 js/json 作为代码块类型进行美化 (2)
+
+AnyBlock的方括号选择器，会更简洁:
+
+````md
+[echarts]
+
+```js
+xxx
+```
+````
+
+> 通用性: 在 obsdian 和支持 markdown-it 的博客平台 (如 vuepress/vitepress)，均可通过 AnyBlock 插件 + ECharts 插件使用。ECharts 在线编辑器中，对于代码块内的内容也是支持的
+
+### `:::` 语法
+
+你可以使用 AnyBlock, 并用 js/json 作为代码块类型进行美化 (1)
+
 参考了 vuepress 生态系统中的语法:
 
 - https://theme-hope.vuejs.press/zh/guide/markdown/chart/echarts.html
 - https://ecosystem.vuejs.press/zh/plugins/markdown/markdown-chart/echarts.html
 
-更详细的语法你可以参考 ECharts 和 chart.js 官网
-
 部分教程可见上，或见插件示例 (需要同时安装此插件和 AnyBlock 插件再进行查看): [demo from vuepress-hope-theme](./docs/old%20docs/demo%20from%20vuepress-hope-theme.md)
-
-### 使用 AnyBlock, 并用 js/json 作为代码块类型进行美化
 
 与 vuepress 插件中的用法不同的是，该插件本身不支持 `:::` 语法，你需要直接使用 echart / chartjs 作为代码块类型
 
@@ -33,16 +75,6 @@
 ~~部分语法可见: [demo from vuepress-hope-theme](./docs/old%20docs/demo%20from%20vuepress-hope-theme.md)~~
 
 ````markdown
-AnyBlock的方括号选择器:
-
-[echarts]
-
-```js
-xxx
-```
-
-或 AnyBlock 和 Markdwon-it 的 `:::` 选择器
-
 ::: echarts
 
 ```js
@@ -51,6 +83,8 @@ xxx
 
 :::
 ````
+
+> 通用性: 在 obsdian 和支持 markdown-it 的博客平台 (如 vuepress/vitepress)，均可通过 AnyBlock + ECharts 插件使用。而在 vuepress 中，vuepress ECharts 自带支持 `:::` 的特性，可以不安装 AnyBlock
 
 ### 使用 AnyBlock，并使用一些转换处理器来简化语法
 
@@ -105,6 +139,8 @@ export default class MyChartPlugin extends Plugin {
     }
 }
 ```
+
+你也可以在 dateviewjs 代码块中去获取该值，直接使用。以进行数据可视化
 
 ## 其他
 
